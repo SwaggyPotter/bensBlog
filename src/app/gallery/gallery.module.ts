@@ -1,14 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { GalleryRoutingModule } from './gallery-routing.module';
+import { IonicModule } from '@ionic/angular';
 
+import { GalleryPageRoutingModule } from './gallery-routing.module';
+
+import { GalleryPage } from './gallery.page';
 
 @NgModule({
-  declarations: [],
   imports: [
     CommonModule,
-    GalleryRoutingModule
-  ]
+    FormsModule,
+    IonicModule,
+    GalleryPageRoutingModule
+  ],
+  declarations: [GalleryPage]
 })
-export class GalleryModule { }
+export class GalleryPageModule {}

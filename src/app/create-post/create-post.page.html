@@ -10,22 +10,29 @@
       <ion-label position="floating">Titel</ion-label>
       <ion-input [(ngModel)]="title" name="title" required></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Inhalt</ion-label>
       <ion-textarea [(ngModel)]="content" name="content" required></ion-textarea>
     </ion-item>
+
+    <!-- Datei auswählen -->
     <ion-item>
-      <ion-label position="floating">Bild-URL</ion-label>
-      <ion-input [(ngModel)]="image" name="image" required></ion-input>
+      <ion-label position="stacked">Bild hochladen</ion-label>
+      <input type="file" (change)="onFileSelected($event)" />
     </ion-item>
-    <ion-button expand="full" type="submit">Beitrag erstellen</ion-button>
+
+    <!-- Hochladen-Button -->
+    <ion-button expand="full" type="button" (click)="uploadImage()">Beitrag mit Bild erstellen</ion-button>
+
+    <!-- Beitrag erstellen -->
+    <ion-button expand="full" type="submit">Beitrag ohne Bild erstellen</ion-button>
   </form>
 
-  <ion-text color="success" *ngIf="successMessage">
-    <p>{{ successMessage }}</p>
+  <ion-text color="success" *ngIf="uploadSuccessMessage">
+    <p>{{ uploadSuccessMessage }}</p>
   </ion-text>
   <ion-text color="danger" *ngIf="errorMessage">
     <p>{{ errorMessage }}</p>
   </ion-text>
 </ion-content>
-

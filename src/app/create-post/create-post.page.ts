@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
 @Component({
@@ -9,31 +10,76 @@ import { getFirestore, collection, addDoc } from 'firebase/firestore';
 export class CreatePostPage {
   title: string = '';
   content: string = '';
-  image: string = '';
-  successMessage: string = '';
+  selectedFile: File | null = null; // Zum Speichern der ausgewählten Datei
+  uploadSuccessMessage: string = '';
   errorMessage: string = '';
-
+  imageUrl: string = ''; // URL des hochgeladenen Bildes
   db = getFirestore();
 
-  async createPost() {
-    const postsCollection = collection(this.db, 'posts');
-    const newPost = {
-      title: this.title,
-      content: this.content,
-      image: this.image || 'assets/imgs/placeholder-image.jpg',
-      date: new Date().toISOString(),
-    };
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    console.log('Ausgewählte Datei:', this.selectedFile);
+  }
+
+  async uploadImage() {
+    if (!this.selectedFile) {
+      this.errorMessage = 'Bitte wähle eine Datei aus.';
+      return;
+    }
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${this.selectedFile.name}`); // Speicherpfad
 
     try {
-      await addDoc(postsCollection, newPost);
-      this.successMessage = 'Beitrag erfolgreich erstellt!';
-      this.title = '';
-      this.content = '';
-      this.image = '';
-    } catch (error: any) {
-      console.error('Fehler beim Erstellen des Beitrags:', error);
-      this.errorMessage = 'Fehler beim Erstellen des Beitrags.';
+      const uploadTask = uploadBytesResumable(storageRef, this.selectedFile);
+      uploadTask.on(
+        'state_changed',
+        (snapshot) => {
+          console.log('Upload läuft...', snapshot.bytesTransferred);
+        },
+        (error) => {
+          console.error('Fehler beim Upload:', error);
+          this.errorMessage = 'Fehler beim Upload.';
+        },
+        async () => {
+          this.imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          console.log('Bild erfolgreich hochgeladen:', this.imageUrl);
+          this.uploadSuccessMessage = 'Bild erfolgreich hochgeladen!';
+        }
+      );
+    } catch (error) {
+      console.error('Fehler beim Hochladen:', error);
+      this.errorMessage = 'Fehler beim Hochladen.';
     }
   }
+
+  async createPost() {
+    if (!this.imageUrl) {
+      this.errorMessage = 'Bitte lade ein Bild hoch.';
+      return;
+    }
+
+    const postsCollection = collection(this.db, 'posts');
+    try {
+      await addDoc(postsCollection, {
+        title: this.title,
+        content: this.content,
+        image: this.imageUrl, // URL des hochgeladenen Bildes speichern
+        date: new Date().toISOString(),
+      });
+      this.uploadSuccessMessage = 'Beitrag erfolgreich erstellt!';
+      this.errorMessage = '';
+      this.title = '';
+      this.content = '';
+      this.imageUrl = '';
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Beitrags:', error);
+      this.errorMessage = 'Fehler beim Erstellen des Beitrags.';
+      this.uploadSuccessMessage = '';
+    }
+  }
+
+ 
 }
+
 

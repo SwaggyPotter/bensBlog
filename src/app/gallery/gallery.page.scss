@@ -12,3 +12,18 @@ ion-button {
     --color-focused: var(--ion-color-light);
     --color-hover: var(--ion-color-light);
 }
+
+ion-grid {
+    padding: 15px;
+}
+
+ion-card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+ion-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}

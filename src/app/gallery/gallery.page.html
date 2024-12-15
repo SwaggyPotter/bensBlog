@@ -14,6 +14,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  gallery
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="6" size-md="4" *ngFor="let post of posts">
+        <ion-card>
+          <ion-img [src]="post.image" alt="{{ post.title }}"></ion-img>
+          <ion-card-content>
+            <p>{{ post.title }}</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

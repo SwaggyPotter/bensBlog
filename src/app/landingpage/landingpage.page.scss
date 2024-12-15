@@ -107,4 +107,23 @@ ion-button {
       }
     }
   }
+
+}
+
+
+.login-icon {
+  position: absolute;
+  top: 10px;
+  /* Abstand von oben */
+  right: 10px;
+  /* Abstand von rechts */
+  z-index: 10;
+  /* Sicherstellen, dass es über anderen Elementen liegt */
+}
+
+.login-icon ion-button {
+  font-size: 24px;
+  /* Größe des Icons */
+  color: var(--ion-color-primary);
+  /* Farbe anpassen */
 }

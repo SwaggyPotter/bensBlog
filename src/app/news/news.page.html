@@ -15,6 +15,17 @@
 </ion-header>
 
 
-<ion-content [fullscreen]="true">
- news
+<ion-content>
+  <div class="news-list">
+    <ion-card *ngFor="let post of sortedPosts">
+      <ion-img [src]="post.image" alt="Bild des Beitrags"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{ post.title }}</ion-card-title>
+        <p class="post-date">Veröffentlicht am: {{ formatDate(post.date) }}</p>
+      </ion-card-header>
+      <ion-card-content>
+        {{ post.content }}
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

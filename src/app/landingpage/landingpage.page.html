@@ -1,15 +1,51 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Willkommen</ion-title>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/">
+        <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/news">
+        <ion-icon name="newspaper-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/gallery">
+        <ion-icon name="images-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
   <div class="hero">
-    <img src="assets/imgs/landing-header.jpg" alt="Landing Image" />
-    <h1>Willkommen in meinem Blog</h1>
-    <p>Entdecke Neuigkeiten, Inspiration und mehr.</p>
-    <ion-button expand="full" routerLink="/news">Zu den Neuigkeiten</ion-button>
-    <ion-button expand="full" routerLink="/gallery">Zur Galerie</ion-button>
+    <h1>Willkommen auf der Landingpage</h1>
+    <p>Entdecke die neuesten Inhalte aus unserem Blog.</p>
+  </div>
+
+  <div class="latest-post">
+    <ion-card>
+      <ion-img [src]="latestPost.image" alt="Bild des letzten Beitrags"></ion-img>
+      <ion-card-header>
+        <ion-card-title>{{ latestPost.title }}</ion-card-title>
+        <p class="post-date">Veröffentlicht am: {{ formattedDate }}</p>
+      </ion-card-header>
+      <ion-card-content>
+        {{ latestPost.content }}
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div class="social-media">
+    <h2>Folge uns auf Social Media</h2>
+    <div class="icons">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+        <ion-icon name="logo-instagram"></ion-icon>
+      </a>
+      <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">
+        <ion-icon name="logo-tiktok"></ion-icon>
+      </a>
+      <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">
+        <ion-icon name="logo-youtube"></ion-icon>
+      </a>
+    </div>
   </div>
 </ion-content>

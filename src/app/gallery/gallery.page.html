@@ -1,19 +1,19 @@
-<ion-header [translucent]="true">
-  <ion-button expand="full" routerLink="/">
-    <ion-icon name="home-outline" slot="start"></ion-icon>
-    Zur Startseite
-  </ion-button>
-  <ion-button expand="full" routerLink="/news">
-    <ion-icon name="newspaper-outline" slot="start"></ion-icon>
-    Zu den Neuigkeiten
-  </ion-button>
-
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button routerLink="/">
+        <ion-icon name="home-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/news">
+        <ion-icon name="newspaper-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button routerLink="/gallery">
+        <ion-icon name="images-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">gallery</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  gallery
 </ion-content>

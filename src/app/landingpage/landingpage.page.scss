@@ -1,22 +1,110 @@
+ion-toolbar {
+  --background: var(--ion-color-primary);
+  color: var(--ion-color-light);
+}
+
+ion-icon {
+  font-size: 20px;
+}
+
+ion-button {
+  --color: var(--ion-color-light);
+  --color-focused: var(--ion-color-light);
+  --color-hover: var(--ion-color-light);
+}
+
+
 .hero {
+  text-align: center;
+  margin: 20px;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: gray;
+  }
+}
+
+.hero {
+  text-align: center;
+  margin: 20px;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: gray;
+  }
+}
+
+.latest-post {
+  padding: 20px;
+
+  ion-card {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  ion-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px 8px 0 0;
+  }
+
+  ion-card-title {
+    font-size: 1.5rem;
     text-align: center;
-    padding: 20px;
-  
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-  
-    h1 {
-      font-size: 2rem;
-      margin: 10px 0;
-    }
-  
-    p {
-      font-size: 1.2rem;
-      color: gray;
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    color: gray;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  ion-card-content {
+    font-size: 1rem;
+    color: #333;
+    text-align: justify;
+  }
+}
+
+.social-media {
+  text-align: center;
+  margin: 30px 0;
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    a {
+      text-decoration: none;
+      color: var(--ion-color-primary);
+      font-size: 2.5rem;
+
+      ion-icon {
+        transition: transform 0.2s ease;
+      }
+
+      &:hover ion-icon {
+        transform: scale(1.2);
+      }
     }
   }
-  
+}

@@ -1,0 +1,14 @@
+ion-toolbar {
+    --background: var(--ion-color-primary);
+    color: var(--ion-color-light);
+}
+
+ion-icon {
+    font-size: 20px;
+}
+
+ion-button {
+    --color: var(--ion-color-light);
+    --color-focused: var(--ion-color-light);
+    --color-hover: var(--ion-color-light);
+}

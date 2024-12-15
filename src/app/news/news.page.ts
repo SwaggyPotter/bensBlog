@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, orderBy, query, addDoc } from 'firebase/firestore';
+import { firebaseConfig } from 'src/firebase.data';
+import { getAuth } from 'firebase/auth';
 
 interface Post {
   title: string;
@@ -13,37 +17,46 @@ interface Post {
   styleUrls: ['./news.page.scss'],
 })
 export class NewsPage implements OnInit {
-  // Beiträge als Array von Post-Objekten
-  posts: Post[] = [
-    {
-      title: 'Beitrag 1',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.',
-      image: 'assets/imgs/placeholder-image.jpg',
-      date: new Date(2024, 11, 10), // 10. Dezember 2024
-    },
-    {
-      title: 'Beitrag 2',
-      content:
-        'Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Sed porttitor lectus nibh.',
-      image: 'assets/imgs/placeholder-image.jpg',
-      date: new Date(2024, 11, 9), // 9. Dezember 2024
-    },
-    {
-      title: 'Beitrag 3',
-      content:
-        'Pellentesque in ipsum id orci porta dapibus. Vestibulum ac diam sit amet quam vehicula elementum.',
-      image: 'assets/imgs/placeholder-image.jpg',
-      date: new Date(2024, 11, 8), // 8. Dezember 2024
-    },
-  ];
+  firebaseConfig = firebaseConfig;
+  db: any;
+  auth: any;
 
-  // Sortierte Beiträge
+  posts: Post[] = [];
   sortedPosts: Post[] = [];
 
-  ngOnInit() {
+  constructor() {
+    const app = initializeApp(firebaseConfig);
+    this.db = getFirestore(app);
+    this.auth = getAuth(app);
+    console.log('Firestore initialisiert:', this.db);
+  }
+
+  async ngOnInit() {
+    // Beiträge aus Firestore laden
+    this.posts = await this.loadPostsFromFirestore();
+
     // Beiträge nach Datum sortieren (neueste zuerst)
     this.sortedPosts = this.posts.sort((a, b) => b.date.getTime() - a.date.getTime());
+  }
+
+  async loadPostsFromFirestore(): Promise<Post[]> {
+    const postsCollection = collection(this.db, 'posts');
+    const postsQuery = query(postsCollection, orderBy('date', 'desc'));
+    const querySnapshot = await getDocs(postsQuery);
+
+    const posts: Post[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      posts.push({
+        title: data['title'],
+        content: data['content'],
+        image: data['image'],
+        date: new Date(data['date']), // Datum konvertieren
+      });
+    });
+
+    console.log('Geladene Beiträge:', posts);
+    return posts;
   }
 
   formatDate(date: Date): string {
@@ -52,8 +65,9 @@ export class NewsPage implements OnInit {
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString('de-DE', options);
+    return new Date(date).toLocaleDateString('de-DE', options);
   }
 }
+
 
 

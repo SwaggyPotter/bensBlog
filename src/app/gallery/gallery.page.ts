@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs, orderBy } from 'firebase/firestore';
+import { firebaseConfig } from 'src/firebase.data';
 
 @Component({
   selector: 'app-gallery',
@@ -6,24 +9,45 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./gallery.page.scss'],
 })
 export class GalleryPage implements OnInit {
-  // Beispiel-Posts mit Bildern
-  posts = [
-    {
-      title: 'Beitrag 1',
-      image: 'assets/imgs/placeholder-image.jpg',
-    },
-    {
-      title: 'Beitrag 2',
-      image: 'assets/imgs/placeholder-image.jpg',
-    },
-    {
-      title: 'Beitrag 3',
-      image: 'assets/imgs/placeholder-image.jpg',
-    },
-  ];
+  db: any;
+  galleryItems: any[] = [];
 
-  ngOnInit() {
-    // Hier könnten später Daten dynamisch geladen werden
+  constructor() {
+    const app = initializeApp(firebaseConfig);
+    this.db = getFirestore(app);
+  }
+
+  async ngOnInit() {
+    await this.loadGalleryItems();
+  }
+
+  async loadGalleryItems() {
+    const postsCollection = collection(this.db, 'posts');
+    const postsQuery = orderBy('date', 'desc'); // Beiträge nach Datum sortieren
+    const querySnapshot = await getDocs(postsCollection);
+
+    const items: any[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      items.push({
+        title: data['title'],
+        image: data['image'] || 'assets/imgs/placeholder-image.jpg',
+        date: new Date(data['date']),
+      });
+    });
+
+    this.galleryItems = items;
+    console.log('Geladene Galerie-Elemente:', this.galleryItems);
+  }
+
+  formatDate(date: Date): string {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return new Date(date).toLocaleDateString('de-DE', options);
   }
 }
+
 

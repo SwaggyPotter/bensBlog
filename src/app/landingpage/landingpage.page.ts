@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
+import { firebaseConfig } from 'src/firebase.data';
 
 @Component({
   selector: 'app-landingpage',
@@ -6,20 +9,41 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./landingpage.page.scss'],
 })
 export class LandingpagePage implements OnInit {
-  // Statische Platzhalter-Daten
-  latestPost = {
-    title: 'Platzhalter-Titel',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.',
+  db: any;
+  latestPost: any = {
+    title: 'Lade neuesten Beitrag...',
+    content: '',
     image: 'assets/imgs/placeholder-image.jpg',
-    date: new Date(2024, 11, 10), // 10. Dezember 2024
+    date: new Date(),
   };
-
   formattedDate: string = '';
 
-  ngOnInit() {
-    // Datum formatieren
-    this.formattedDate = this.formatDate(this.latestPost.date);
+  constructor() {
+    const app = initializeApp(firebaseConfig);
+    this.db = getFirestore(app);
+  }
+
+  async ngOnInit() {
+    await this.loadLatestPost();
+  }
+
+  async loadLatestPost() {
+    const postsCollection = collection(this.db, 'posts');
+    const postsQuery = query(postsCollection, orderBy('date', 'desc'), limit(1));
+    const querySnapshot = await getDocs(postsQuery);
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      this.latestPost = {
+        title: data['title'],
+        content: data['content'],
+        image: data['image'] || 'assets/imgs/placeholder-image.jpg',
+        date: new Date(data['date']),
+      };
+
+      // Formatierter Text für das Datum
+      this.formattedDate = this.formatDate(this.latestPost.date);
+    });
   }
 
   formatDate(date: Date): string {
@@ -28,9 +52,10 @@ export class LandingpagePage implements OnInit {
       month: 'long',
       day: 'numeric',
     };
-    return date.toLocaleDateString('de-DE', options); // Formatierung für Deutschland
+    return new Date(date).toLocaleDateString('de-DE', options);
   }
 }
+
 
 
 

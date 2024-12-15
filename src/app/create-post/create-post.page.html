@@ -22,13 +22,17 @@
       <input type="file" (change)="onFileSelected($event)" />
     </ion-item>
 
-    <!-- Hochladen-Button -->
-    <ion-button expand="full" type="button" (click)="uploadImage()">Beitrag mit Bild erstellen</ion-button>
+    <!-- Fortschrittsanzeige -->
+    <ion-item *ngIf="isUploading">
+      <ion-label>Upload Fortschritt: {{ uploadProgress }}%</ion-label>
+      <ion-progress-bar [value]="uploadProgress / 100"></ion-progress-bar>
+    </ion-item>
 
     <!-- Beitrag erstellen -->
-    <ion-button expand="full" type="submit">Beitrag ohne Bild erstellen</ion-button>
+    <ion-button expand="full" type="submit" [disabled]="isUploading">Beitrag erstellen</ion-button>
   </form>
 
+  <!-- Erfolgs- und Fehlermeldungen -->
   <ion-text color="success" *ngIf="uploadSuccessMessage">
     <p>{{ uploadSuccessMessage }}</p>
   </ion-text>

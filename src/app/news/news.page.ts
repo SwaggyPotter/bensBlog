@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, orderBy, query, addDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { firebaseConfig } from 'src/firebase.data';
 import { getAuth } from 'firebase/auth';
 
@@ -9,6 +9,7 @@ interface Post {
   content: string;
   image: string;
   date: Date;
+  expanded?: boolean; // Hinzugefügter Zustand für das Ausklappen
 }
 
 @Component({
@@ -52,6 +53,7 @@ export class NewsPage implements OnInit {
         content: data['content'],
         image: data['image'],
         date: new Date(data['date']), // Datum konvertieren
+        expanded: false, // Standardmäßig nicht ausgeklappt
       });
     });
 
@@ -67,7 +69,8 @@ export class NewsPage implements OnInit {
     };
     return new Date(date).toLocaleDateString('de-DE', options);
   }
+
+  toggleContent(post: Post) {
+    post.expanded = !post.expanded; // Umschalten des erweiterten Zustands
+  }
 }
-
-
-

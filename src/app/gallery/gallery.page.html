@@ -15,17 +15,27 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col size="6" *ngFor="let item of galleryItems">
-        <ion-card>
-          <ion-img [src]="item.image" alt="Bild des Beitrags"></ion-img>
-          <ion-card-header>
-            <ion-card-title>{{ item.title }}</ion-card-title>
-            <p class="post-date">Veröffentlicht am: {{ formatDate(item.date) }}</p>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="gallery-container">
+    <div *ngFor="let item of galleryItems" class="gallery-item" (click)="openImage(item)">
+      <ion-img [src]="item.image" alt="{{ item.title }}"
+        (error)="item.image = 'assets/imgs/placeholder-image.jpg'"></ion-img>
+      <h3>{{ item.title }}</h3>
+      <p>{{ formatDate(item.date) }}</p>
+    </div>
+  </div>
+
+
+
+  <ion-modal [isOpen]="!!selectedImage">
+    <ng-template>
+      <ion-content>
+        <div class="modal-container">
+          <ion-img *ngIf="selectedImage?.image" [src]="selectedImage?.image" alt="{{ selectedImage?.title }}"></ion-img>
+          <h2>{{ selectedImage?.title }}</h2>
+          <p>{{ formatDate(selectedImage?.date) }}</p>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

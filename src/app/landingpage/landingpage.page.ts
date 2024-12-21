@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, query, orderBy, limit, getDocs } from 'firebase/firestore';
 import { firebaseConfig } from 'src/firebase.data';
@@ -18,7 +19,7 @@ export class LandingpagePage implements OnInit {
   };
   formattedDate: string = '';
 
-  constructor() {
+  constructor(private router: Router) {
     const app = initializeApp(firebaseConfig);
     this.db = getFirestore(app);
   }
@@ -44,6 +45,10 @@ export class LandingpagePage implements OnInit {
       // Formatierter Text für das Datum
       this.formattedDate = this.formatDate(this.latestPost.date);
     });
+  }
+
+  goToNewsPage() {
+    this.router.navigate(['/news']); // Navigiert zur Neuigkeiten-Seite
   }
 
   formatDate(date: Date): string {

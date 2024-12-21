@@ -28,14 +28,14 @@
   </div>
 
   <div class="latest-post">
-    <ion-card>
-      <ion-img [src]="latestPost.image" alt="Bild des letzten Beitrags"></ion-img>
+    <ion-card (click)="goToNewsPage()">
+      <ion-img [src]="latestPost?.image" alt="Bild des letzten Beitrags"></ion-img>
       <ion-card-header>
-        <ion-card-title>{{ latestPost.title }}</ion-card-title>
+        <ion-card-title>{{ latestPost?.title }}</ion-card-title>
         <p class="post-date">Veröffentlicht am: {{ formattedDate }}</p>
       </ion-card-header>
       <ion-card-content>
-        {{ latestPost.content }}
+        {{ latestPost?.content | slice: 0:100 }}...
       </ion-card-content>
     </ion-card>
   </div>
